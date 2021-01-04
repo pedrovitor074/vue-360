@@ -250,8 +250,9 @@ export default {
             for(let i=1; i <= this.amount; i++){
                 const imageIndex = (this.paddingIndex) ? this.lpad(i, "0", 2) : i;
                 const fileName = this.fileName.replace('{index}', imageIndex);
-                if (this.blobNames.length > 0){
-                    const fileName = this.fileName.replace('{index}', this.blobNames[i-1]);
+                 if (this.blobNames.length > 0){
+                    console.log("entrou aqui?");
+                    fileName = this.fileName.replace('{index}', this.blobNames[i-1]);
                 }
                 const filePath = `${this.imagePath}/${fileName}`
                 this.imageData.push(filePath)
