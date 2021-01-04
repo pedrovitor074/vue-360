@@ -101,6 +101,11 @@ export default {
             require: true,
             default: false,
         },
+        blobNames:{
+        type: Array,
+        require: true,
+        default: []
+        },
         amount: {
             type: Number,
             require: true,
@@ -244,11 +249,14 @@ export default {
 
             for(let i=1; i <= this.amount; i++){
                 const imageIndex = (this.paddingIndex) ? this.lpad(i, "0", 2) : i
-                const fileName = this.fileName.replace('{index}', imageIndex);
+                if(this.blobNames.length > 0){
+                    const fileName = this.fileName.replace('{index}', this.preNames[i-1]);
+                }else{
+                    const fileName = this.fileName.replace('{index}', imageIndex);
+                }
                 const filePath = `${this.imagePath}/${fileName}`
                 this.imageData.push(filePath)
             }
-
             this.preloadImages()
         },
 
