@@ -251,7 +251,7 @@ export default {
                 const imageIndex = (this.paddingIndex) ? this.lpad(i, "0", 2) : i;
                 const fileName = this.fileName.replace('{index}', imageIndex);
                 if (this.blobNames.length > 0){
-                    const fileName = this.fileName.replace('{index}', this.preNames[i-1]);
+                    const fileName = this.fileName.replace('{index}', this.blobNames[i-1]);
                 }
                 const filePath = `${this.imagePath}/${fileName}`
                 this.imageData.push(filePath)
