@@ -46,7 +46,7 @@
             <!--/ Fullscreen Button -->
 
             <!-- Buttons Container -->
-            <div id="v360-menu-btns" :class="buttonClass">
+            <div v-if="buttonsVerify" id="v360-menu-btns" :class="buttonClass">
                 <div class="v360-navigate-btns">
                     <div class="v360-menu-btns" @click="togglePlay" :class="(playing) ? 'v360-btn-active' : ''">
                         <i class="fa fa-play" v-if="!playing"></i>
@@ -102,9 +102,14 @@ export default {
             default: false,
         },
         blobNames:{
-        type: Array,
-        require: true,
-        default: null,
+            type: Array,
+            require: true,
+            default: null,
+        },
+        buttonsVerify : {
+            type: Boolean,
+            require: true,
+            default: false,
         },
         amount: {
             type: Number,
@@ -249,9 +254,8 @@ export default {
 
             for(let i=1; i <= this.amount; i++){
                 const imageIndex = (this.paddingIndex) ? this.lpad(i, "0", 2) : i;
-                const fileName = this.fileName.replace('{index}', imageIndex);
-                 if (this.blobNames.length > 0){
-                    console.log("entrou aqui?");
+                let fileName = this.fileName.replace('{index}', imageIndex);
+                if (this.blobNames.length > 0){
                     fileName = this.fileName.replace('{index}', this.blobNames[i-1]);
                 }
                 const filePath = `${this.imagePath}/${fileName}`
