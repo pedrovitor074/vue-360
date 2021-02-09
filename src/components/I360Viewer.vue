@@ -16,26 +16,32 @@
 
             <!-- 360 viewport -->
             <div class="v360-viewport" ref="viewport">
-                <canvas 
-                    class="v360-image-container" 
-                    ref="imageContainer" 
-                    @wheel="zoomImage"
-                    v-hammer:pinch="onPinch"
-                    v-hammer:pinchend="onPinch"
-                    v-hammer:pinchout="onPinchOut"
-                    v-hammer:pinchin="onPinchIn"
-                ></canvas>
-                <div class="v360-product-box-shadow" 
-                    v-if="boxShadow" @wheel="zoomImage"
-                    v-hammer:pinch="onPinch"
-                    v-hammer:pinchend="onPinch"
-                    v-hammer:pinchout="onPinchOut"
-                    v-hammer:pinchin="onPinchIn"
-                ></div>
+                <!-- <div class="container" ref="container"> -->
+                    <div class="hotspot" ref="hotspot" v-for="(ht, idx) in hotSpot" :key="idx" @click="showTeste = !showTeste">
+                        <div class="boxImgHotspot" v-show="showTeste">
+                            <img ref="hotspotContent" />
+                        </div>
+                    </div>
+                    <canvas 
+                        class="v360-image-container" 
+                        ref="imageContainer" 
+                        @wheel="zoomImage"
+                        v-hammer:pinch="onPinch"
+                        v-hammer:pinchend="onPinch"
+                        v-hammer:pinchout="onPinchOut"
+                        v-hammer:pinchin="onPinchIn"></canvas>
+
+                    <div class="v360-product-box-shadow" 
+                        v-if="boxShadow" @wheel="zoomImage"
+                        v-hammer:pinch="onPinch"
+                        v-hammer:pinchend="onPinch"
+                        v-hammer:pinchout="onPinchOut"
+                        v-hammer:pinchin="onPinchIn"></div>
+                <!-- </div> -->
             </div>
             <!--/ 360 viewport -->
 
-            <!-- Fullscreen Button -->
+            <!-- Fullscreen  Button -->
             <abbr title="Fullscreen Toggle">
                 <div class="v360-fullscreen-toggle text-center" @click="toggleFullScreen">
                     <div class="v360-fullscreen-toggle-btn" :class="(buttonClass == 'dark') ? 'text-light' : 'text-dark'">
@@ -86,6 +92,11 @@ const uuidv1 = require('uuid/v1');
 export default {
     name: 'I360Viewer',
     props: {
+        hotSpot: {
+            type: Array,
+            require: false,
+            default: () => []
+        },
         imagePath: {
             type: String,
             require: true,
@@ -136,11 +147,6 @@ export default {
             require: false,
             default: 'light'
         },
-        hotspots: {
-            type: Array,
-            require: true,
-            default: () => []
-        },
         identifier: {
             type: String,
             require: true,
@@ -188,7 +194,9 @@ export default {
             loopTimeoutId: 0,
             images: [],
             imageData: [],
-            playing: false
+            playing: false,
+            showTeste: false,
+            Hotspots: []
         }
     },
     watch: {
@@ -247,17 +255,23 @@ export default {
             this.attachEvents();
             window.addEventListener('resize', this.resizeWindow);
             this.resizeWindow()
-
             this.playing = this.autoplay
+            this.redraw()
+
         },
         fetchData(){
-
+            // for(let i=1; i <= this.amount; i++){
+            //     const imageIndex = (this.paddingIndex) ? this.lpad(i, "0", 2) : i;
+            //     let fileName = this.fileName.replace('{index}', imageIndex);
+            //     if (this.blobNames.length > 0){
+            //         fileName = this.fileName.replace('{index}', this.blobNames[i-1]);
+            //     }
+            //     const filePath = `${this.imagePath}/${fileName}`
+            //     this.imageData.push(filePath)
+            // }
             for(let i=1; i <= this.amount; i++){
-                const imageIndex = (this.paddingIndex) ? this.lpad(i, "0", 2) : i;
-                let fileName = this.fileName.replace('{index}', imageIndex);
-                if (this.blobNames.length > 0){
-                    fileName = this.fileName.replace('{index}', this.blobNames[i-1]);
-                }
+                const imageIndex = (this.paddingIndex) ? this.lpad(i, "0", 2) : i
+                const fileName = this.fileName.replace('{index}', imageIndex);
                 const filePath = `${this.imagePath}/${fileName}`
                 this.imageData.push(filePath)
             }
@@ -376,10 +390,12 @@ export default {
             this.isMobile = !!('ontouchstart' in window || navigator.msMaxTouchPoints);
         },
         loadInitialImage(){
-            this.currentImage = this.imageData[0] 
+            this.currentImage = this.imageData[this.activeImage -1]
             this.setImage()
         },
         resizeWindow(){
+            // this.$refs.viewport.style.width = document.documentElement.clientWidth + 'px'
+            // this.$refs.viewport.style.height = document.documentElement.clientHeight + 'px'
             this.setImage()
         },
         onPinch(evt){
@@ -472,14 +488,13 @@ export default {
             if(!cached){
                 this.currentCanvasImage = new Image()
                 this.currentCanvasImage.crossOrigin='anonymous'
-                this.currentCanvasImage.src = this.currentImage
+                this.currentCanvasImage.src = this.imageData[this.activeImage - 1]
 
                 this.currentCanvasImage.onload = () => {
                     let viewportElement = this.$refs.viewport.getBoundingClientRect()
                     this.canvas.width  = (this.isFullScreen) ? viewportElement.width : this.currentCanvasImage.width
                     this.canvas.height = (this.isFullScreen) ? viewportElement.height : this.currentCanvasImage.height
                     this.trackTransforms(this.ctx)
-
                     this.redraw()
                 }
 
@@ -513,79 +528,20 @@ export default {
 
                 this.centerX = this.currentCanvasImage.width*ratio/2
                 this.centerY = this.currentCanvasImage.height*ratio/2
-                
+
                 //center image
                 this.ctx.drawImage(this.currentCanvasImage, this.currentLeftPosition, this.currentTopPosition, this.currentCanvasImage.width, this.currentCanvasImage.height,
                             centerShift_x,centerShift_y,this.currentCanvasImage.width*ratio, this.currentCanvasImage.height*ratio);  
-
-                this.addHotspots()
-
             }
             catch(e){
                 this.trackTransforms(this.ctx)
             }
 
         },
-        addHotspots(){
-            this.clearHotspots()
-
-            let currentImageHotspots = this.hotspots.filter(h => h.frame == this.activeImage)
-
-            for(let c in currentImageHotspots){
-                let hotspotElement = currentImageHotspots[c]
-                
-                let hotspotPositionX, hotspotPositionY
-                
-                if(this.canvas.width > this.$refs.viewport.clientWidth){
-                    /* hotspotPositionX = hotspotElement.x * this.$refs.viewport.clientWidth * this.currentScale
-                    hotspotPositionY = hotspotElement.y * this.$refs.viewport.clientHeight * this.currentScale */
-                    hotspotPositionX = hotspotElement.x * this.$refs.viewport.clientWidth
-                    hotspotPositionY = hotspotElement.y * this.$refs.viewport.clientHeight
-                }else{
-                    hotspotPositionX = hotspotElement.x * this.canvas.width
-                    hotspotPositionY = hotspotElement.y * this.canvas.height
-                }
-                
-                let divElement = document.createElement('div')
-                let spanElement = document.createElement('span')
-                let imgElement = document.createElement('img')
-                
-                imgElement.className = 'hotspot-icon'
-                imgElement.src = hotspotElement.icon
-                spanElement.className = 'tooltiptext'
-                spanElement.innerHTML = hotspotElement.text
-                divElement.className = 'tooltip'
-                divElement.style.left = hotspotPositionX + 'px'
-                divElement.style.top = hotspotPositionY + 'px'
-                divElement.appendChild(imgElement)
-                divElement.appendChild(spanElement)
-
-                imgElement.addEventListener('click', (e) => {
-                    e.preventDefault()
-                    console.log('show edit hotspot form')
-                    this.selectedHotspot = hotspotElement
-                    this.openHotspotForm(true)
-                })
-
-                if(hotspotElement.action){
-                    console.log('add this function: ' + hotspotElement.action)
-                }
-                
-                this.$refs.viewport.appendChild(divElement)
-                //console.log('draw')
-                //this.ctx.drawImage(this.currentCanvasImage, hotspotElement.x*this.canvas.width, hotspotElement.y*this.canvas.height, 10, 10)
-            }
-        },
-        clearHotspots(){
-            let hotspotButtons = document.getElementById(this.identifier).querySelectorAll('.tooltip')
-            
-            if(hotspotButtons.length)
-                hotspotButtons.forEach(element => element.remove())
-        },
         onMove(pageX){
             if (pageX - this.movementStart >= this.speedFactor) {
                 let itemsSkippedRight = Math.floor((pageX - this.movementStart) / this.speedFactor) || 1;
-                
+
                 this.movementStart = pageX;
 
                 if (this.spinReverse) {
@@ -613,7 +569,7 @@ export default {
         },
         startMoving(evt){
             this.movement = true
-            this.movementStart = event.pageX;
+            this.movementStart = evt.pageX;
             this.$refs.viewport.style.cursor = 'grabbing';
         },
         doMoving(evt){
@@ -655,12 +611,25 @@ export default {
         },
         update() {
             const image = this.images[this.activeImage - 1];
+            
+            this.hotSpot.forEach((ht, idx) => {
+                if(ht.frame === this.activeImage) {
+                    this.$refs.hotspot[idx].style.left = `${ht.x}px`;
+                    this.$refs.hotspot[idx].style.top = `${ht.y}px`;
+                    this.$refs.hotspotContent[idx].src = ht.title;
+                    this.$refs.hotspot[idx].style.display = "block";
+                } else {
+                    this.$refs.hotspot[idx].style.display = "";
+                    this.$refs.hotspotContent[idx].innerHTML = '';
+                    this.showTeste = false;
+                }
+            })
+
 
             this.currentCanvasImage = image
-
             this.redraw()
         },
-        stopMoving(evt){
+        stopMoving(){
             this.movement = false
             this.movementStart = 0
             this.$refs.viewport.style.cursor = 'grab'

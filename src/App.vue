@@ -6,20 +6,15 @@
         <!-- Example 1 - Car -->
         <div class="col-12 mb-4 card p-0">
           <vue-three-sixty 
-            :amount=36
-            imagePath="https://scaleflex.cloudimg.io/crop/1920x700/n/https://scaleflex.airstore.io/demo/360-car"
-            fileName="iris-{index}.jpeg"
+            :amount=52
+            imagePath="https://s3-sa-east-1.amazonaws.com/qcarro/360/28"
+            fileName="{index}"
             spinReverse
-            autoplay
             buttonClass="dark"
+            :buttonsVerify="true"
+            :hotSpot="data"
+            :carID="34"
           >
-            <template v-slot:header>
-              <div class="v360-header text-light bg-dark">
-                  <span class="v360-header-title">36 Images - Autoplay (1 loop) - Reverse Spin</span>
-                  <span class="v360-header-description"></span>
-              </div>
-            </template>
-
           </vue-three-sixty>
         </div>
         <!--/ Example 1 - Car -->
@@ -80,6 +75,15 @@
 
 export default {
   name: 'app',
+  data() {
+    return {
+      data: [{
+            x: 726,
+            y: 156,
+            frame: 1,
+      },]
+    }
+  },
   mounted() {
     //safari zoom bug fix
     this.disableZoomin();

@@ -68,16 +68,36 @@ root {
     transition: width 0.3s ease;
 }
 .v360-viewport {
+    position: relative;
     background-color: #FFF;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     /* position: absolute; */
     left: 0;
     /* transition: width 0.3s ease; */
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.hotspot {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    background: blue;
+    display: none;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+.boxImgHotspot img {
+    border-radius: 1px;
+    box-shadow: 1px 1px 9px 1px rgb(0 0 0 / 10%);
+    /* transform: translateY(-113px); */
+    position: absolute !important;
+    bottom: 20px;
 }
 
 #viewport-wrapper.wide {
