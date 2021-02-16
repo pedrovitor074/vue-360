@@ -1,6 +1,8 @@
 import VueThreeSixty from './components/I360Viewer.vue'
 import { VueHammer } from 'vue2-hammer'
 
+
+
 export default {
     install(Vue, options) {
         // Let's register our component globally

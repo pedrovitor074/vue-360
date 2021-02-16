@@ -2,20 +2,21 @@
   <div id="app">
     <div class="container">
       <div class="row">
-        
         <!-- Example 1 - Car -->
-        <div class="col-12 mb-4 card p-0">
-          <vue-three-sixty 
-            :amount=52
-            imagePath="https://s3-sa-east-1.amazonaws.com/qcarro/360/28"
-            fileName="{index}"
-            spinReverse
-            buttonClass="dark"
-            :buttonsVerify="true"
-            :hotSpot="data"
-            :carID="34"
-          >
-          </vue-three-sixty>
+        <div class="col-6 mb-4 card p-0 card">
+          <div class="card-body">
+            <vue-three-sixty 
+              :amount=52
+              imagePath="https://s3-sa-east-1.amazonaws.com/qcarro/360/34"
+              fileName="{index}"
+              spinReverse
+              buttonClass="dark"
+              :buttonsVerify="true"
+              :hotSpot="data"
+              :carID="34"
+            >
+            </vue-three-sixty>
+          </div>
         </div>
         <!--/ Example 1 - Car -->
 
@@ -25,45 +26,6 @@
           <p>100% Mobile Responsive with Touch Actions</p>
           <p>Features include Zoom, Pan, Autoplay, Loop, Crop, Reverse Spin, Show/Hide Header, and more. <a href="https://github.com/rajeevgade/vue-360-viewer">Click here for more information.</a> </p>
         </div>
-
-        <!-- Example 2 - Chair - 36 images -->
-        <div class="col-12 col-md-6 mb-4 card p-0">
-          <!-- <h4 class="my-2 text-center">36 Images</h4> -->
-          <vue-three-sixty 
-            :amount=36
-            imagePath="https://scaleflex.cloudimg.io/width/600/q35/https://scaleflex.ultrafast.io/https://scaleflex.airstore.io/demo/chair-360-36"
-            fileName="chair_{index}.jpg?v1"
-            buttonClass="dark"
-          >
-            <template v-slot:header>
-              <div class="v360-header text-light bg-dark">
-                  <span class="v360-header-title">36 Images</span>
-                  <span class="v360-header-description"></span>
-              </div>
-            </template>
-          </vue-three-sixty>
-        </div>
-        <!--/ Example 2 - Chair - 36 images -->
-
-        <!-- Example 3 - Chair - 36 images -->
-        <div class="col-12 col-md-6 mb-4 card p-0">
-          <!-- <h4 class="my-2 text-center">72 Images - Box Shadow</h4> -->
-          <vue-three-sixty
-            :amount=72
-            imagePath="https://scaleflex.cloudimg.io/width/600/q35/https://scaleflex.ultrafast.io/https://scaleflex.airstore.io/demo/chair-360-72"
-            fileName="chair_{index}.jpg?v1"
-            boxShadow
-          >
-            <template v-slot:header>
-              <div class="v360-header text-dark bg-light">
-                  <span class="v360-header-title">72 Images - Box Shadow</span>
-                  <span class="v360-header-description"></span>
-              </div>
-            </template>
-          </vue-three-sixty>
-        </div>
-        <!--/ Example 3 - Chair - 72 images -->
-
       </div>
     </div>
   </div>
@@ -78,10 +40,18 @@ export default {
   data() {
     return {
       data: [{
-            x: 726,
-            y: 156,
-            frame: 1,
-      },]
+        XPos: 915.7893585742847,
+        YPos: 500.9178893400493,
+        frame: 1,
+        ID: 1,
+        data: 'https://res.cloudinary.com/cazoo/image/upload/c_scale,f_auto,h_1080,q_auto,w_1920/cazoo-imagery/car_gallery_images/MK16ERY/dqAc68JXzS3fSbZGnRL0.JPG'
+      },
+      {
+        XPos: 487.3764756483823,
+        YPos: 794.9959518803277,
+        frame: 2,
+        ID: 2,
+      }]
     }
   },
   mounted() {

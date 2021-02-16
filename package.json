@@ -20,7 +20,10 @@
     "dist/*"
   ],
   "dependencies": {
+    "bootstrap": "^4.6.0",
     "core-js": "^3.6.5",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1",
     "uuid": "^3.4.0",
     "vue": "^2.6.10",
     "vue2-hammer": "^2.1.2"

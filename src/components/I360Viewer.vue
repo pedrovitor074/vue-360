@@ -16,31 +16,30 @@
 
             <!-- 360 viewport -->
             <div class="v360-viewport" ref="viewport">
-                <!-- <div class="container" ref="container"> -->
-                    <div class="hotspot" ref="hotspot" v-for="(ht, idx) in hotSpot" :key="idx" @click="showTeste = !showTeste">
-                        <div class="boxImgHotspot" v-show="showTeste">
-                            <img ref="hotspotContent" />
-                        </div>
-                    </div>
-                    <canvas 
-                        class="v360-image-container" 
-                        ref="imageContainer" 
-                        @wheel="zoomImage"
-                        v-hammer:pinch="onPinch"
-                        v-hammer:pinchend="onPinch"
-                        v-hammer:pinchout="onPinchOut"
-                        v-hammer:pinchin="onPinchIn"></canvas>
-
-                    <div class="v360-product-box-shadow" 
-                        v-if="boxShadow" @wheel="zoomImage"
-                        v-hammer:pinch="onPinch"
-                        v-hammer:pinchend="onPinch"
-                        v-hammer:pinchout="onPinchOut"
-                        v-hammer:pinchin="onPinchIn"></div>
-                <!-- </div> -->
+                <canvas 
+                    class="v360-image-container" 
+                    ref="imageContainer" 
+                    @wheel="zoomImage"
+                    v-hammer:pinch="onPinch"
+                    v-hammer:pinchend="onPinch"
+                    v-hammer:pinchout="onPinchOut"
+                    v-hammer:pinchin="onPinchIn"
+                ></canvas>
+                <div class="v360-product-box-shadow" 
+                    v-if="boxShadow" @wheel="zoomImage"
+                    v-hammer:pinch="onPinch"
+                    v-hammer:pinchend="onPinch"
+                    v-hammer:pinchout="onPinchOut"
+                    v-hammer:pinchin="onPinchIn"
+                ></div>
             </div>
             <!--/ 360 viewport -->
-
+             <div class="d-flex">
+                    <button class="btn btn-danger mr-2" @click="canvas.removeEventListener('click', createHotSpot)">Parar</button>
+                    <button class="btn btn-primary mr-2" @click="canvas.addEventListener('click', createHotSpot)">Iniciar</button>
+                    <button class="btn btn-primary mr-2" @click="canvas.addEventListener('click', hasClickedOnHotspot)">Click Mark</button>
+                    <button class="btn btn-success" @click="saveHotspot">Salvar</button>
+            </div>
             <!-- Fullscreen  Button -->
             <abbr title="Fullscreen Toggle">
                 <div class="v360-fullscreen-toggle text-center" @click="toggleFullScreen">
@@ -83,11 +82,22 @@
 
         </div>
         <!--/ 360 Viewer Container -->
+        <!-- Modal -->
+        <div class="modal fade" v-for="ht in Hotspots" :id="ht.MarkID" :key="ht.MarkID" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-body">
+                <img :src="ht.img" class="img-fluid w-100" alt="">
+            </div>
+            </div>
+        </div>
+        </div>
     </div>
 </template>
 
 <script>
-const uuidv1 = require('uuid/v1');
+import uuidv1 from 'uuid/v1';
+import $ from 'jquery'
 
 export default {
     name: 'I360Viewer',
@@ -196,7 +206,8 @@ export default {
             imageData: [],
             playing: false,
             showTeste: false,
-            Hotspots: []
+            Hotspots: [],
+            hotspot_id: 0,
         }
     },
     watch: {
@@ -249,6 +260,7 @@ export default {
         initData(){
             this.checkMobile()
             this.loadInitialImage()
+            this.hasHotSpotData()
             
             this.canvas = this.$refs.imageContainer
             this.ctx = this.canvas.getContext('2d')
@@ -394,8 +406,6 @@ export default {
             this.setImage()
         },
         resizeWindow(){
-            // this.$refs.viewport.style.width = document.documentElement.clientWidth + 'px'
-            // this.$refs.viewport.style.height = document.documentElement.clientHeight + 'px'
             this.setImage()
         },
         onPinch(evt){
@@ -532,6 +542,15 @@ export default {
                 //center image
                 this.ctx.drawImage(this.currentCanvasImage, this.currentLeftPosition, this.currentTopPosition, this.currentCanvasImage.width, this.currentCanvasImage.height,
                             centerShift_x,centerShift_y,this.currentCanvasImage.width*ratio, this.currentCanvasImage.height*ratio);  
+
+                // cria os marcadores de acordo com os dados que foram adicionar atraves de prop ou marcadores que foram recem criados
+                for (var i = 0; i < this.Hotspots.length; i++) {
+                    let hotspot = this.Hotspots[i];
+                    
+                    if(hotspot.frame === this.activeImage) {
+                        this.ctx.drawImage(hotspot.Mark, hotspot.XPos, hotspot.YPos, hotspot.Width, hotspot.Height);
+                    }
+                }
             }
             catch(e){
                 this.trackTransforms(this.ctx)
@@ -609,27 +628,88 @@ export default {
             
             this.update()
         },
-        update() {
-            const image = this.images[this.activeImage - 1];
+        hasHotSpotData() {
+            if(this.hotSpot.length) {
+                this.hotSpot.forEach(({XPos, YPos, frame, ID, data}) => {
+                    const hotspot = new this.HotspotDraw();
+                    hotspot.XPos = XPos;
+                    hotspot.YPos = YPos;
+                    hotspot.frame = frame;
+                    hotspot.MarkID = ID
+                    hotspot.img = data;
+                    this.Hotspots.push(hotspot)
+                })
+            }
+        },
+        saveHotspot() {
+            // metodo pro avaliador ou outros salvarem os marcadores
+            let hotspotToSave = [...this.Hotspots]
+            hotspotToSave = hotspotToSave.map((_) => {
+            //    TO-DO
+            //    deletar markerIMG e outros dados que não são necessarios
+            //    fazer req pra salvar
+            })
+            console.log(hotspotToSave)
+        },
+        HotspotDraw() {
+            // objeto do marcador
+            this.Mark = new Image();
+            this.Mark.src = "https://i.imgur.com/caOHXPF.png"
+            this.MarkID = 0
+            this.Width = 48;
+            this.Height = 48;
+            this.XPos = 0;
+            this.YPos = 0;
+            this.frame = null;
+        },
+        createHotSpot(mouse) {
+            // pega posição do clique
+            // faz um calculo em relação ao tamanho do canvas e depois adiciona esse marcador dentro do canvas
+            const rect = this.canvas.getBoundingClientRect();
+            const scaleX = this.canvas.width / rect.width;  
+            const scaleY = this.canvas.height / rect.height;
+
+            const mouseXPos = (mouse.clientX - rect.left) * scaleX;
+            const mouseYPos = (mouse.clientY - rect.top) * scaleY;
+
+            const hotspot = new this.HotspotDraw();
+            hotspot.XPos = mouseXPos - (hotspot.Width / 2);
+            hotspot.YPos = mouseYPos - hotspot.Height;
+            hotspot.MarkID =  uuidv1();
+            hotspot.frame = this.activeImage
+
+            console.log(hotspot, 'marcador criado')
+            this.Hotspots.push(hotspot);
+            this.redraw();
+        },
+        hasClickedOnHotspot(mouse) {
+            // TODO
+            // melhorar sensibilidade do click (proximidade) - referencia: https://stackoverflow.com/questions/9880279/how-do-i-add-a-simple-onclick-event-handler-to-a-canvas-element
+            const rect = this.canvas.getBoundingClientRect();
+            const scaleX = this.canvas.width / rect.width;  
+            const scaleY = this.canvas.height / rect.height;
+
+            const mouseXPos = (mouse.clientX - rect.left) * scaleX;
+            const mouseYPos = (mouse.clientY - rect.top) * scaleY;
             
-            this.hotSpot.forEach((ht, idx) => {
-                if(ht.frame === this.activeImage) {
-                    this.$refs.hotspot[idx].style.left = `${ht.x}px`;
-                    this.$refs.hotspot[idx].style.top = `${ht.y}px`;
-                    this.$refs.hotspotContent[idx].src = ht.title;
-                    this.$refs.hotspot[idx].style.display = "block";
-                } else {
-                    this.$refs.hotspot[idx].style.display = "";
-                    this.$refs.hotspotContent[idx].innerHTML = '';
-                    this.showTeste = false;
+            const tempHotspot = new this.HotspotDraw();
+
+            tempHotspot.XPos = mouseXPos - (tempHotspot.Width / 2);
+            tempHotspot.YPos = mouseYPos - tempHotspot.Height;
+            this.Hotspots.forEach(({XPos,MarkID, frame}) => {
+                if(tempHotspot.XPos === XPos) {
+                    this.hotspot_id = MarkID
+                    console.log('modal?', MarkID)
+                    $(`#${MarkID}`).modal('toggle')
                 }
             })
-
-
+        },
+        update() {
+            const image = this.images[this.activeImage - 1];
             this.currentCanvasImage = image
             this.redraw()
         },
-        stopMoving(){
+        stopMoving(evt){
             this.movement = false
             this.movementStart = 0
             this.$refs.viewport.style.cursor = 'grab'
