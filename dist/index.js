@@ -13204,7 +13204,7 @@ var script = {
         if (tempHotspot.XPos === XPos) {
           _this5.hotspot_id = MarkID;
           console.log('modal?', MarkID);
-          jquery("#".concat(MarkID)).modal('toggle');
+          $("#".concat(MarkID)).modal('toggle');
         }
       });
     },
