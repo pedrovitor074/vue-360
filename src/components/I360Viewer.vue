@@ -35,10 +35,9 @@
             </div>
             <!--/ 360 viewport -->
              <div class="d-flex">
-                    <button class="btn btn-danger mr-2" @click="canvas.removeEventListener('click', createHotSpot)">Parar</button>
-                    <button class="btn btn-primary mr-2" @click="canvas.addEventListener('click', createHotSpot)">Iniciar</button>
-                    <button class="btn btn-primary mr-2" @click="canvas.addEventListener('click', hasClickedOnHotspot)">Click Mark</button>
-                    <button class="btn btn-success" @click="saveHotspot">Salvar</button>
+                <button class="btn btn-primary mr-2" @click="createEventStart">Iniciar</button>
+                <button class="btn btn-primary mr-2" @click="createEventSelect">Click Mark</button>
+                <button class="btn btn-success" @click="saveHotspot">Salvar</button>
             </div>
             <!-- Fullscreen  Button -->
             <abbr title="Fullscreen Toggle">
@@ -681,6 +680,13 @@ export default {
             console.log(hotspot, 'marcador criado')
             this.Hotspots.push(hotspot);
             this.redraw();
+        },
+        createEventStart() {
+            this.canvas.addEventListener('click', this.createHotSpot)
+        },
+        createEventSelect() {
+            this.canvas.removeEventListener('click', this.createHotSpot);
+            this.canvas.addEventListener('click', this.hasClickedOnHotspot)
         },
         hasClickedOnHotspot(mouse) {
             // TODO

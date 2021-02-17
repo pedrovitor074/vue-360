@@ -13197,6 +13197,13 @@ var script = {
       this.Hotspots.push(hotspot);
       this.redraw();
     },
+    createEventStart: function createEventStart() {
+      this.canvas.addEventListener('click', this.createHotSpot);
+    },
+    createEventSelect: function createEventSelect() {
+      this.canvas.removeEventListener('click', this.createHotSpot);
+      this.canvas.addEventListener('click', this.hasClickedOnHotspot);
+    },
     hasClickedOnHotspot: function hasClickedOnHotspot(mouse) {
       var _this5 = this;
 
@@ -13568,25 +13575,14 @@ var __vue_render__ = function __vue_render__() {
   }) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "d-flex"
   }, [_c('button', {
-    staticClass: "btn btn-danger mr-2",
-    on: {
-      "click": function click($event) {
-        return _vm.canvas.removeEventListener('click', _vm.createHotSpot);
-      }
-    }
-  }, [_vm._v("Parar")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary mr-2",
     on: {
-      "click": function click($event) {
-        return _vm.canvas.addEventListener('click', _vm.createHotSpot);
-      }
+      "click": _vm.createEventStart
     }
   }, [_vm._v("Iniciar")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary mr-2",
     on: {
-      "click": function click($event) {
-        return _vm.canvas.addEventListener('click', _vm.hasClickedOnHotspot);
-      }
+      "click": _vm.createEventSelect
     }
   }, [_vm._v("Click Mark")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-success",
