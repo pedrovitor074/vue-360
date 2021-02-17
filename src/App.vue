@@ -5,7 +5,7 @@
         <!-- Example 1 - Car -->
         <div class="col-6 mb-4 card p-0 card">
           <div class="card-body">
-            <vue-three-sixty 
+            <vue-three-sixty
               :amount=52
               imagePath="https://s3-sa-east-1.amazonaws.com/qcarro/360/34"
               fileName="{index}"
@@ -59,6 +59,9 @@ export default {
     this.disableZoomin();
   },
   methods: {
+    getHotSpot(event){
+      console.log("seila", event);
+    },
     disableZoomin(){
       document.addEventListener("gesturestart", function (e) {
         e.preventDefault();

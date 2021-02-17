@@ -643,12 +643,7 @@ export default {
         saveHotspot() {
             // metodo pro avaliador ou outros salvarem os marcadores
             let hotspotToSave = [...this.Hotspots]
-            hotspotToSave = hotspotToSave.map((_) => {
-            //    TO-DO
-            //    deletar markerIMG e outros dados que não são necessarios
-            //    fazer req pra salvar
-            })
-            console.log(hotspotToSave)
+            this.$emit('salvarhotspot', hotspotToSave);
         },
         HotspotDraw() {
             // objeto do marcador

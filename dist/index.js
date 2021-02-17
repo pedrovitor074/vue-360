@@ -815,23 +815,6 @@ _export({ target: 'Array', proto: true, forced: [].forEach != arrayForEach }, {
   forEach: arrayForEach
 });
 
-var $map = arrayIteration.map;
-
-
-
-var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('map');
-// FF49- issue
-var USES_TO_LENGTH$1 = arrayMethodUsesToLength('map');
-
-// `Array.prototype.map` method
-// https://tc39.github.io/ecma262/#sec-array.prototype.map
-// with adding support of @@species
-_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH$1 }, {
-  map: function map(callbackfn /* , thisArg */) {
-    return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-  }
-});
-
 var aPossiblePrototype = function (it) {
   if (!isObject(it) && it !== null) {
     throw TypeError("Can't set " + String(it) + ' as a prototype');
@@ -13163,11 +13146,7 @@ var script = {
       // metodo pro avaliador ou outros salvarem os marcadores
       var hotspotToSave = _toConsumableArray(this.Hotspots);
 
-      hotspotToSave = hotspotToSave.map(function (_) {//    TO-DO
-        //    deletar markerIMG e outros dados que não são necessarios
-        //    fazer req pra salvar
-      });
-      console.log(hotspotToSave);
+      this.$emit('salvarhotspot', hotspotToSave);
     },
     HotspotDraw: function HotspotDraw() {
       // objeto do marcador
