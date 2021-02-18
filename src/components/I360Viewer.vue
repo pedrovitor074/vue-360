@@ -34,7 +34,8 @@
                 ></div>
             </div>
             <!--/ 360 viewport -->
-             <div class="d-flex">
+            <!-- Hotspot Buttons -->
+             <div class="d-flex justify-content-center" v-if="!disableButtons">
                 <button class="btn btn-primary mr-2" @click="createEventStart">Iniciar</button>
                 <button class="btn btn-primary mr-2" @click="createEventSelect">Click Mark</button>
                 <button class="btn btn-success" @click="saveHotspot">Salvar</button>
@@ -105,6 +106,11 @@ export default {
             type: Array,
             require: false,
             default: () => []
+        },
+        disableButtons: {
+            type: Boolean,
+            require: true,
+            default: false,
         },
         imagePath: {
             type: String,
@@ -268,6 +274,10 @@ export default {
             this.resizeWindow()
             this.playing = this.autoplay
             this.redraw()
+
+            if(this.disableButtons) {
+                this.createEventSelect();
+            }
 
         },
         fetchData(){

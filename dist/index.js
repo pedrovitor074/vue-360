@@ -12617,6 +12617,11 @@ var script = {
         return [];
       }
     },
+    disableButtons: {
+      type: Boolean,
+      require: true,
+      default: false
+    },
     imagePath: {
       type: String,
       require: true,
@@ -12780,6 +12785,10 @@ var script = {
       this.resizeWindow();
       this.playing = this.autoplay;
       this.redraw();
+
+      if (this.disableButtons) {
+        this.createEventSelect();
+      }
     },
     fetchData: function fetchData() {
       // for(let i=1; i <= this.amount; i++){
@@ -13551,8 +13560,8 @@ var __vue_render__ = function __vue_render__() {
     on: {
       "wheel": _vm.zoomImage
     }
-  }) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "d-flex"
+  }) : _vm._e()]), _vm._v(" "), !_vm.disableButtons ? _c('div', {
+    staticClass: "d-flex justify-content-center"
   }, [_c('button', {
     staticClass: "btn btn-primary mr-2",
     on: {
@@ -13568,7 +13577,7 @@ var __vue_render__ = function __vue_render__() {
     on: {
       "click": _vm.saveHotspot
     }
-  }, [_vm._v("Salvar")])]), _vm._v(" "), _c('abbr', {
+  }, [_vm._v("Salvar")])]) : _vm._e(), _vm._v(" "), _c('abbr', {
     attrs: {
       "title": "Fullscreen Toggle"
     }
