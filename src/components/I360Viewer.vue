@@ -34,11 +34,12 @@
                 ></div>
             </div>
             <!--/ 360 viewport -->
+
             <!-- Hotspot Buttons -->
              <div class="d-flex justify-content-center" v-if="!disableButtons">
-                <button class="btn btn-primary mr-2" @click="createEventStart">Iniciar</button>
-                <button class="btn btn-primary mr-2" @click="createEventSelect">Click Mark</button>
-                <button class="btn btn-success" @click="saveHotspot">Salvar</button>
+                <button class="btn btn-secondary mr-2" @click="createEventStart">Adicionar Marcadores</button>
+                <!-- <button class="btn btn-primary mr-2" @click="createEventSelect">Click Mark</button> -->
+                <button class="btn btn-green" @click="saveHotspot">Salvar</button>
             </div>
             <!-- Fullscreen  Button -->
             <abbr title="Fullscreen Toggle">
@@ -266,18 +267,18 @@ export default {
             this.checkMobile()
             this.loadInitialImage()
             this.hasHotSpotData()
+
             
             this.canvas = this.$refs.imageContainer
             this.ctx = this.canvas.getContext('2d')
             this.attachEvents();
+            if(this.disableButtons) {
+                this.createEventSelect();
+            }
             window.addEventListener('resize', this.resizeWindow);
             this.resizeWindow()
             this.playing = this.autoplay
             this.redraw()
-
-            if(this.disableButtons) {
-                this.createEventSelect();
-            }
 
         },
         fetchData(){
@@ -706,11 +707,16 @@ export default {
             const tempHotspot = new this.HotspotDraw();
 
             tempHotspot.XPos = mouseXPos - (tempHotspot.Width / 2);
-            tempHotspot.YPos = mouseYPos - tempHotspot.Height;
-            this.Hotspots.forEach(({XPos,MarkID, frame}) => {
-                if(tempHotspot.XPos === XPos) {
+            tempHotspot.YPos = mouseYPos - (tempHotspot.Height/ 2);
+            console.log(this.Hotspots);
+            this.Hotspots.forEach(({XPos,MarkID, frame, YPos}) => {
+                let v1 = tempHotspot.XPos < (((8 / 100) * XPos) + XPos);
+                let v2 = tempHotspot.XPos > (XPos - ((8 / 100) * XPos));
+                let y1 = tempHotspot.YPos < (((8 / 100) * YPos) + YPos);
+                let y2 = tempHotspot.YPos > (YPos - ((8 / 100) * YPos));
+                if((v1 && v2) && (y1 && y2)) {
                     this.hotspot_id = MarkID
-                    console.log('modal?', MarkID)
+                    console.log(MarkID);
                     $(`#${MarkID}`).modal('toggle')
                 }
             })

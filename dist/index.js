@@ -12781,14 +12781,15 @@ var script = {
       this.canvas = this.$refs.imageContainer;
       this.ctx = this.canvas.getContext('2d');
       this.attachEvents();
-      window.addEventListener('resize', this.resizeWindow);
-      this.resizeWindow();
-      this.playing = this.autoplay;
-      this.redraw();
 
       if (this.disableButtons) {
         this.createEventSelect();
       }
+
+      window.addEventListener('resize', this.resizeWindow);
+      this.resizeWindow();
+      this.playing = this.autoplay;
+      this.redraw();
     },
     fetchData: function fetchData() {
       // for(let i=1; i <= this.amount; i++){
@@ -13204,15 +13205,21 @@ var script = {
       var mouseYPos = (mouse.clientY - rect.top) * scaleY;
       var tempHotspot = new this.HotspotDraw();
       tempHotspot.XPos = mouseXPos - tempHotspot.Width / 2;
-      tempHotspot.YPos = mouseYPos - tempHotspot.Height;
+      tempHotspot.YPos = mouseYPos - tempHotspot.Height / 2;
+      console.log(this.Hotspots);
       this.Hotspots.forEach(function (_ref2) {
         var XPos = _ref2.XPos,
             MarkID = _ref2.MarkID,
-            frame = _ref2.frame;
+            frame = _ref2.frame,
+            YPos = _ref2.YPos;
+        var v1 = tempHotspot.XPos < 8 / 100 * XPos + XPos;
+        var v2 = tempHotspot.XPos > XPos - 8 / 100 * XPos;
+        var y1 = tempHotspot.YPos < 8 / 100 * YPos + YPos;
+        var y2 = tempHotspot.YPos > YPos - 8 / 100 * YPos;
 
-        if (tempHotspot.XPos === XPos) {
+        if (v1 && v2 && y1 && y2) {
           _this5.hotspot_id = MarkID;
-          console.log('modal?', MarkID);
+          console.log(MarkID);
           $("#".concat(MarkID)).modal('toggle');
         }
       });
@@ -13563,17 +13570,12 @@ var __vue_render__ = function __vue_render__() {
   }) : _vm._e()]), _vm._v(" "), !_vm.disableButtons ? _c('div', {
     staticClass: "d-flex justify-content-center"
   }, [_c('button', {
-    staticClass: "btn btn-primary mr-2",
+    staticClass: "btn btn-secondary mr-2",
     on: {
       "click": _vm.createEventStart
     }
-  }, [_vm._v("Iniciar")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary mr-2",
-    on: {
-      "click": _vm.createEventSelect
-    }
-  }, [_vm._v("Click Mark")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-success",
+  }, [_vm._v("Adicionar Marcadores")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-green",
     on: {
       "click": _vm.saveHotspot
     }
