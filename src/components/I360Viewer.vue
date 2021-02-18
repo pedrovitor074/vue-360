@@ -684,7 +684,6 @@ export default {
             hotspot.MarkID =  uuidv1();
             hotspot.frame = this.activeImage
 
-            console.log(hotspot, 'marcador criado')
             this.Hotspots.push(hotspot);
             this.redraw();
         },
@@ -709,7 +708,6 @@ export default {
 
             tempHotspot.XPos = mouseXPos - (tempHotspot.Width / 2);
             tempHotspot.YPos = mouseYPos - (tempHotspot.Height/ 2);
-            console.log(this.Hotspots);
             this.Hotspots.forEach(({XPos,MarkID, frame, YPos}) => {
                 let v1 = tempHotspot.XPos < (((8 / 100) * XPos) + XPos);
                 let v2 = tempHotspot.XPos > (XPos - ((8 / 100) * XPos));
@@ -717,7 +715,6 @@ export default {
                 let y2 = tempHotspot.YPos > (YPos - ((8 / 100) * YPos));
                 if((v1 && v2) && (y1 && y2)) {
                     this.hotspot_id = MarkID
-                    console.log(MarkID);
                     $(`#${MarkID}`).modal('toggle')
                 }
             })
