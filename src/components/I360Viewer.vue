@@ -214,6 +214,7 @@ export default {
             showTeste: false,
             Hotspots: [],
             hotspot_id: 0,
+            markImage: ''
         }
     },
     watch: {
@@ -558,9 +559,28 @@ export default {
                     let hotspot = this.Hotspots[i];
                     
                     if(hotspot.frame === this.activeImage) {
-                        this.ctx.drawImage(hotspot.Mark, hotspot.XPos, hotspot.YPos, hotspot.Width, hotspot.Height);
+                        if(!this.disableButtons) {
+                            hotspot.Mark.src = "https://i.imgur.com/myzq0x7.png";
+                            this.ctx.drawImage(hotspot.Mark, hotspot.XPos, hotspot.YPos, hotspot.Width, hotspot.Height);
+                            // Draw a simple box so you can see the position
+                            let markerText = hotspot.MarkID;
+
+                            let textMeasurements = this.ctx.measureText(markerText);
+                            this.ctx.font = "42px Arial";
+                            this.ctx.fillStyle = "#001b72";
+                            this.ctx.fillRect(hotspot.XPos, hotspot.YPos, textMeasurements.width * 1.30, 45);
+                            this.ctx.globalAlpha = 1;
+
+                            this.ctx.fillStyle = "#fff";
+                            this.ctx.fillText(markerText, hotspot.XPos + 10, hotspot.YPos + 35);
+                        }else{
+                            hotspot.Mark.src = "https://i.imgur.com/caOHXPF.png";
+                            this.ctx.drawImage(hotspot.Mark, hotspot.XPos, hotspot.YPos, hotspot.Width, hotspot.Height);
+                        }
                     }
+                    
                 }
+                //this.redraw();
             }
             catch(e){
                 this.trackTransforms(this.ctx)
@@ -641,11 +661,12 @@ export default {
         hasHotSpotData() {
             if(this.hotSpot.length) {
                 this.hotSpot.forEach(({XPos, YPos, frame, ID, data, MarkID}) => {
-                    
+                    console.log(ID);
                     const hotspot = new this.HotspotDraw();
                     hotspot.XPos = XPos;
                     hotspot.YPos = YPos;
                     hotspot.frame = frame;
+                    hotspot.id = ID;
                     hotspot.MarkID = MarkID;
                     hotspot.img = data;
                     this.Hotspots.push(hotspot)
@@ -660,7 +681,7 @@ export default {
         HotspotDraw() {
             // objeto do marcador
             this.Mark = new Image();
-            this.Mark.src = "https://i.imgur.com/caOHXPF.png"
+            this.Mark.src = this.disableButtons ? 'https://i.imgur.com/caOHXPF.png':''
             this.MarkID = 0
             this.Width = 48;
             this.Height = 48;
@@ -681,7 +702,7 @@ export default {
             const hotspot = new this.HotspotDraw();
             hotspot.XPos = mouseXPos - (hotspot.Width / 2);
             hotspot.YPos = mouseYPos - hotspot.Height;
-            hotspot.MarkID =  uuidv1();
+            hotspot.MarkID = this.Hotspots.length + 1;
             hotspot.frame = this.activeImage
 
             this.Hotspots.push(hotspot);

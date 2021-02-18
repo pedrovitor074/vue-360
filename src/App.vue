@@ -12,6 +12,7 @@
               spinReverse
               buttonClass="dark"
               :buttonsVerify="false"
+              :disableButtons="false"
               :hotSpot="data"
               :carID="34"
             >

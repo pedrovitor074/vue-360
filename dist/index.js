@@ -12724,7 +12724,8 @@ var script = {
       playing: false,
       showTeste: false,
       Hotspots: [],
-      hotspot_id: 0
+      hotspot_id: 0,
+      markImage: ''
     };
   },
   watch: {
@@ -13059,9 +13060,25 @@ var script = {
           var hotspot = this.Hotspots[i];
 
           if (hotspot.frame === this.activeImage) {
-            this.ctx.drawImage(hotspot.Mark, hotspot.XPos, hotspot.YPos, hotspot.Width, hotspot.Height);
+            if (!this.disableButtons) {
+              hotspot.Mark.src = "https://i.imgur.com/myzq0x7.png";
+              this.ctx.drawImage(hotspot.Mark, hotspot.XPos, hotspot.YPos, hotspot.Width, hotspot.Height); // Draw a simple box so you can see the position
+
+              var markerText = hotspot.MarkID;
+              var textMeasurements = this.ctx.measureText(markerText);
+              this.ctx.font = "42px Arial";
+              this.ctx.fillStyle = "#001b72";
+              this.ctx.fillRect(hotspot.XPos, hotspot.YPos, textMeasurements.width * 1.30, 45);
+              this.ctx.globalAlpha = 1;
+              this.ctx.fillStyle = "#fff";
+              this.ctx.fillText(markerText, hotspot.XPos + 10, hotspot.YPos + 35);
+            } else {
+              hotspot.Mark.src = "https://i.imgur.com/caOHXPF.png";
+              this.ctx.drawImage(hotspot.Mark, hotspot.XPos, hotspot.YPos, hotspot.Width, hotspot.Height);
+            }
           }
-        }
+        } //this.redraw();
+
       } catch (e) {
         this.trackTransforms(this.ctx);
       }
@@ -13142,10 +13159,12 @@ var script = {
               ID = _ref.ID,
               data = _ref.data,
               MarkID = _ref.MarkID;
+          console.log(ID);
           var hotspot = new _this4.HotspotDraw();
           hotspot.XPos = XPos;
           hotspot.YPos = YPos;
           hotspot.frame = frame;
+          hotspot.id = ID;
           hotspot.MarkID = MarkID;
           hotspot.img = data;
 
@@ -13162,7 +13181,7 @@ var script = {
     HotspotDraw: function HotspotDraw() {
       // objeto do marcador
       this.Mark = new Image();
-      this.Mark.src = "https://i.imgur.com/caOHXPF.png";
+      this.Mark.src = this.disableButtons ? 'https://i.imgur.com/caOHXPF.png' : '';
       this.MarkID = 0;
       this.Width = 48;
       this.Height = 48;
@@ -13181,9 +13200,8 @@ var script = {
       var hotspot = new this.HotspotDraw();
       hotspot.XPos = mouseXPos - hotspot.Width / 2;
       hotspot.YPos = mouseYPos - hotspot.Height;
-      hotspot.MarkID = v1_1();
+      hotspot.MarkID = this.Hotspots.length + 1;
       hotspot.frame = this.activeImage;
-      console.log(hotspot, 'marcador criado');
       this.Hotspots.push(hotspot);
       this.redraw();
     },
@@ -13207,7 +13225,6 @@ var script = {
       var tempHotspot = new this.HotspotDraw();
       tempHotspot.XPos = mouseXPos - tempHotspot.Width / 2;
       tempHotspot.YPos = mouseYPos - tempHotspot.Height / 2;
-      console.log(this.Hotspots);
       this.Hotspots.forEach(function (_ref2) {
         var XPos = _ref2.XPos,
             MarkID = _ref2.MarkID,
@@ -13220,7 +13237,6 @@ var script = {
 
         if (v1 && v2 && y1 && y2) {
           _this5.hotspot_id = MarkID;
-          console.log(MarkID);
           $("#".concat(MarkID)).modal('toggle');
         }
       });
