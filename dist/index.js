@@ -13237,7 +13237,7 @@ var script = {
 
         if (v1 && v2 && y1 && y2) {
           _this5.hotspot_id = MarkID;
-          $("#".concat(MarkID)).modal('toggle');
+          jquery("#".concat(MarkID)).modal('toggle');
         }
       });
     },
@@ -13589,12 +13589,18 @@ var __vue_render__ = function __vue_render__() {
   }, [_c('button', {
     staticClass: "btn btn-secondary mr-2",
     on: {
-      "click": _vm.createEventStart
+      "click": function click($event) {
+        $event.preventDefault();
+        return _vm.createEventStart($event);
+      }
     }
   }, [_vm._v("Adicionar Marcadores")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-green",
     on: {
-      "click": _vm.saveHotspot
+      "click": function click($event) {
+        $event.preventDefault();
+        return _vm.saveHotspot($event);
+      }
     }
   }, [_vm._v("Salvar")])]) : _vm._e(), _vm._v(" "), _c('abbr', {
     attrs: {
