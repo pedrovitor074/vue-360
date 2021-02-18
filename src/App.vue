@@ -11,7 +11,7 @@
               fileName="{index}"
               spinReverse
               buttonClass="dark"
-              :buttonsVerify="true"
+              :buttonsVerify="false"
               :hotSpot="data"
               :carID="34"
             >

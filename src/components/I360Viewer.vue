@@ -640,12 +640,13 @@ export default {
         },
         hasHotSpotData() {
             if(this.hotSpot.length) {
-                this.hotSpot.forEach(({XPos, YPos, frame, ID, data}) => {
+                this.hotSpot.forEach(({XPos, YPos, frame, ID, data, MarkID}) => {
+                    
                     const hotspot = new this.HotspotDraw();
                     hotspot.XPos = XPos;
                     hotspot.YPos = YPos;
                     hotspot.frame = frame;
-                    hotspot.MarkID = ID
+                    hotspot.MarkID = MarkID;
                     hotspot.img = data;
                     this.Hotspots.push(hotspot)
                 })

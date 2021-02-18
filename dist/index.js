@@ -13140,12 +13140,13 @@ var script = {
               YPos = _ref.YPos,
               frame = _ref.frame,
               ID = _ref.ID,
-              data = _ref.data;
+              data = _ref.data,
+              MarkID = _ref.MarkID;
           var hotspot = new _this4.HotspotDraw();
           hotspot.XPos = XPos;
           hotspot.YPos = YPos;
           hotspot.frame = frame;
-          hotspot.MarkID = ID;
+          hotspot.MarkID = MarkID;
           hotspot.img = data;
 
           _this4.Hotspots.push(hotspot);
