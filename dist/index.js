@@ -13015,7 +13015,7 @@ var script = {
 
       if (!cached) {
         this.currentCanvasImage = new Image();
-        this.currentCanvasImage.crossOrigin = 'anonymous';
+        this.currentCanvasImage.crossOrigin = '*';
         this.currentCanvasImage.src = this.imageData[this.activeImage - 1];
 
         this.currentCanvasImage.onload = function () {

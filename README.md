@@ -1,5 +1,7 @@
 # vue-360
-- A Simple and Beautiful 360&deg; Product Viewer built on Vue.js
+- A Simple and Beautiful 360&deg; Product Viewer built on Vue.js npx bili --bundle-node-modules
+
+
 
 ### [Click here for React Version](https://github.com/rajeevgade/react-360)
 
