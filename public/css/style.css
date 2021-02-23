@@ -30,7 +30,12 @@ root {
 }
 
 /* HEADER */
-
+.percentage-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+}
 .v360-header {
     /* width: calc(100% - 20px); */
     background-color: #000;

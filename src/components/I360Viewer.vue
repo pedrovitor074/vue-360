@@ -8,7 +8,7 @@
             <!--/ 360 Viewer Header -->
             
             <!-- Percentage Loader -->
-            <div class="v360-viewport" v-if="!imagesLoaded">
+            <div class="percentage-wrapper" v-if="!imagesLoaded">
                 <div class="v360-spinner-grow"></div>
                 <p ref="viewPercentage" class="v360-percentage-text"></p>
             </div>

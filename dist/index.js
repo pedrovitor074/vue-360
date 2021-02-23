@@ -12860,7 +12860,7 @@ var script = {
       /* if (this.loader) {
           this.loader.style.width = percentage + '%';
       }
-       if (this.view360Icon) {
+        if (this.view360Icon) {
           this.view360Icon.innerText = percentage + '%';
       } */
       this.$refs.viewPercentage.innerHTML = percentage + '%'; //console.log(percentage + '%')
@@ -13238,7 +13238,7 @@ var script = {
 
         if (v1 && v2 && y1 && y2) {
           _this5.hotspot_id = MarkID;
-          $("#".concat(MarkID)).modal('toggle');
+          jquery("#".concat(MarkID)).modal('toggle');
         }
       });
     },
@@ -13515,7 +13515,7 @@ var __vue_render__ = function __vue_render__() {
       "id": _vm.identifier
     }
   }, [_vm._t("header"), _vm._v(" "), !_vm.imagesLoaded ? _c('div', {
-    staticClass: "v360-viewport"
+    staticClass: "percentage-wrapper"
   }, [_c('div', {
     staticClass: "v360-spinner-grow"
   }), _vm._v(" "), _c('p', {
