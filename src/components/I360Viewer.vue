@@ -508,7 +508,7 @@ export default {
             
             if(!cached){
                 this.currentCanvasImage = new Image()
-                this.currentCanvasImage.crossOrigin='*'
+                //this.currentCanvasImage.crossOrigin='*'
                 this.currentCanvasImage['Access-Control-Allow-Origin']='*'
                 this.currentCanvasImage.src = this.imageData[this.activeImage - 1]
 
@@ -520,8 +520,8 @@ export default {
                     this.redraw()
                 }
 
-                this.currentCanvasImage.onerror = () => {
-                    console.log('cannot load this image')
+                this.currentCanvasImage.onerror = (e) => {
+                    console.log('cannot load this image ', e)
                 }
             }else{
                 this.currentCanvasImage = this.images[0]

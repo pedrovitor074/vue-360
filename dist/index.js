@@ -13014,8 +13014,8 @@ var script = {
       this.currentLeftPosition = this.currentTopPosition = 0;
 
       if (!cached) {
-        this.currentCanvasImage = new Image();
-        this.currentCanvasImage.crossOrigin = '*';
+        this.currentCanvasImage = new Image(); //this.currentCanvasImage.crossOrigin='*'
+
         this.currentCanvasImage['Access-Control-Allow-Origin'] = '*';
         this.currentCanvasImage.src = this.imageData[this.activeImage - 1];
 
@@ -13030,8 +13030,8 @@ var script = {
           _this3.redraw();
         };
 
-        this.currentCanvasImage.onerror = function () {
-          console.log('cannot load this image');
+        this.currentCanvasImage.onerror = function (e) {
+          console.log('cannot load this image ', e);
         };
       } else {
         this.currentCanvasImage = this.images[0];

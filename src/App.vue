@@ -6,8 +6,8 @@
         <div class="col-6 mb-4 card p-0 card">
           <div class="card-body">
             <vue-three-sixty
-              :amount=52
-              imagePath="https://s3-sa-east-1.amazonaws.com/qcarro/360/34"
+              :amount=30
+              imagePath="https://s3-sa-east-1.amazonaws.com/qcarro/studio/1"
               fileName="{index}"
               spinReverse
               buttonClass="dark"
