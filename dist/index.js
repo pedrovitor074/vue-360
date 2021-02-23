@@ -13016,6 +13016,7 @@ var script = {
       if (!cached) {
         this.currentCanvasImage = new Image();
         this.currentCanvasImage.crossOrigin = '*';
+        this.currentCanvasImage['Access-Control-Allow-Origin'] = '*';
         this.currentCanvasImage.src = this.imageData[this.activeImage - 1];
 
         this.currentCanvasImage.onload = function () {
@@ -13237,7 +13238,7 @@ var script = {
 
         if (v1 && v2 && y1 && y2) {
           _this5.hotspot_id = MarkID;
-          $("#".concat(MarkID)).modal('toggle');
+          jquery("#".concat(MarkID)).modal('toggle');
         }
       });
     },

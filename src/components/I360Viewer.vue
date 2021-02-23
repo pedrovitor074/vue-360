@@ -509,6 +509,7 @@ export default {
             if(!cached){
                 this.currentCanvasImage = new Image()
                 this.currentCanvasImage.crossOrigin='*'
+                this.currentCanvasImage['Access-Control-Allow-Origin']='*'
                 this.currentCanvasImage.src = this.imageData[this.activeImage - 1]
 
                 this.currentCanvasImage.onload = () => {
