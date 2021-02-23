@@ -13238,7 +13238,7 @@ var script = {
 
         if (v1 && v2 && y1 && y2) {
           _this5.hotspot_id = MarkID;
-          jquery("#".concat(MarkID)).modal('toggle');
+          $("#".concat(MarkID)).modal('toggle');
         }
       });
     },
