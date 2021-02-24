@@ -12722,10 +12722,10 @@ var script = {
       images: [],
       imageData: [],
       playing: false,
-      showTeste: false,
       Hotspots: [],
       hotspot_id: 0,
-      markImage: ''
+      markImage: '',
+      isMoving: false
     };
   },
   watch: {
@@ -13085,6 +13085,8 @@ var script = {
       }
     },
     onMove: function onMove(pageX) {
+      this.isMoving = true;
+
       if (pageX - this.movementStart >= this.speedFactor) {
         var itemsSkippedRight = Math.floor((pageX - this.movementStart) / this.speedFactor) || 1;
         this.movementStart = pageX;
@@ -13524,7 +13526,13 @@ var __vue_render__ = function __vue_render__() {
   })]) : _vm._e(), _vm._v(" "), _c('div', {
     ref: "viewport",
     staticClass: "v360-viewport"
-  }, [_c('canvas', {
+  }, [!_vm.isMoving && _vm.currentImage ? _c('img', {
+    staticClass: "v360-indicator",
+    attrs: {
+      "src": "https://i.imgur.com/krLYc7p.png",
+      "alt": ""
+    }
+  }) : _vm._e(), _vm._v(" "), _c('canvas', {
     directives: [{
       name: "hammer",
       rawName: "v-hammer:pinch",

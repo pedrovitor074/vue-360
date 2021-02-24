@@ -64,6 +64,13 @@ root {
     max-height: none;
 }
 
+.v360-indicator {
+    position: absolute !important;
+    width: 150px;
+    z-index: 10000;
+
+}
+
 #viewport-wrapper {
     width: 100%;
     height: calc(100% - 10px);

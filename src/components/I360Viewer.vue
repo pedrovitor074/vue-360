@@ -16,6 +16,7 @@
 
             <!-- 360 viewport -->
             <div class="v360-viewport" ref="viewport">
+                <img v-if="!isMoving && currentImage" class="v360-indicator" src="https://i.imgur.com/krLYc7p.png" alt="">
                 <canvas 
                     class="v360-image-container" 
                     ref="imageContainer" 
@@ -211,10 +212,10 @@ export default {
             images: [],
             imageData: [],
             playing: false,
-            showTeste: false,
             Hotspots: [],
             hotspot_id: 0,
-            markImage: ''
+            markImage: '',
+            isMoving: false,
         }
     },
     watch: {
@@ -412,7 +413,7 @@ export default {
         checkMobile(){
             this.isMobile = !!('ontouchstart' in window || navigator.msMaxTouchPoints);
         },
-        loadInitialImage(){
+        loadInitialImage(){  
             this.currentImage = this.imageData[this.activeImage -1]
             this.setImage()
         },
@@ -589,6 +590,7 @@ export default {
 
         },
         onMove(pageX){
+            this.isMoving = true;
             if (pageX - this.movementStart >= this.speedFactor) {
                 let itemsSkippedRight = Math.floor((pageX - this.movementStart) / this.speedFactor) || 1;
 
