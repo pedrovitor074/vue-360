@@ -277,7 +277,11 @@ root {
 .v360-percentage-description{
     margin-left: 2rem;
 }
-
+.v360-indicator {
+    position: absolute !important;
+    width: 150px;
+    z-index: 10000;
+}
 
 /* Tooltip */
 
