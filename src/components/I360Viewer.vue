@@ -37,7 +37,7 @@
             <!--/ 360 viewport -->
 
             <!-- Hotspot Buttons -->
-             <div class="d-flex justify-content-center" v-if="!disableButtons">
+             <div class="d-flex justify-content-center mt-2" v-if="!disableButtons">
                 <button class="btn btn-secondary mr-2" @click.prevent="createEventStart">Adicionar Marcadores</button>
                 <!-- <button class="btn btn-primary mr-2" @click="createEventSelect">Click Mark</button> -->
                 <button class="btn btn-green" @click.prevent="saveHotspot">Salvar</button>

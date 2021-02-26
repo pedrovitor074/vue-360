@@ -274,6 +274,12 @@ root {
     -webkit-animation: spinner-grow .75s linear infinite;
     animation: spinner-grow .75s linear infinite;
 }
+.percentage-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+}
 .v360-percentage-description{
     margin-left: 2rem;
 }

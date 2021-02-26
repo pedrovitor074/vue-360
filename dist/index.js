@@ -13594,7 +13594,7 @@ var __vue_render__ = function __vue_render__() {
       "wheel": _vm.zoomImage
     }
   }) : _vm._e()]), _vm._v(" "), !_vm.disableButtons ? _c('div', {
-    staticClass: "d-flex justify-content-center"
+    staticClass: "d-flex justify-content-center mt-2"
   }, [_c('button', {
     staticClass: "btn btn-secondary mr-2",
     on: {
