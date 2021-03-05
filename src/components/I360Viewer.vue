@@ -15,7 +15,7 @@
             <!--/ Percentage Loader -->
 
             <!-- 360 viewport -->
-            <div class="v360-viewport" ref="viewport">
+            <div class="v360-viewport" v-show="imagesLoaded" ref="viewport">
                 <img v-if="!isMoving && currentImage" class="v360-indicator" src="https://i.imgur.com/krLYc7p.png" alt="">
                 <canvas 
                     class="v360-image-container" 

@@ -13240,7 +13240,7 @@ var script = {
 
         if (v1 && v2 && y1 && y2) {
           _this5.hotspot_id = MarkID;
-          $("#".concat(MarkID)).modal('toggle');
+          jquery("#".concat(MarkID)).modal('toggle');
         }
       });
     },
@@ -13524,6 +13524,12 @@ var __vue_render__ = function __vue_render__() {
     ref: "viewPercentage",
     staticClass: "v360-percentage-text"
   })]) : _vm._e(), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.imagesLoaded,
+      expression: "imagesLoaded"
+    }],
     ref: "viewport",
     staticClass: "v360-viewport"
   }, [!_vm.isMoving && _vm.currentImage ? _c('img', {
